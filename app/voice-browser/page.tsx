@@ -523,12 +523,27 @@ export default function VoiceBrowserUI() {
   const latestMessage = messages.length > 0 ? messages[messages.length - 1] : null
 
   return (
-    <div className="min-h-screen bg-gray-50 p-4">
+    <div className="min-h-screen bg-gray-950 text-gray-100 p-4">
       <div className="max-w-4xl mx-auto">
         <main role="main" aria-live="polite">
-          <Card>
+          {/* GitHub Repository Link */}
+          <div className="mb-4 text-center">
+            <a 
+              href="https://github.com/sandeepsalwan1/browserVoice" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors"
+            >
+              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              View Full Code on GitHub
+            </a>
+          </div>
+          
+          <Card className="bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle>
+              <CardTitle className="text-gray-100">
                 Voice Browser Control
                 <span className="sr-only">
                   {isConnected ? 'Connected to backend' : 'Disconnected from backend'}
@@ -539,12 +554,13 @@ export default function VoiceBrowserUI() {
                   className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`}
                   aria-hidden="true"
                 />
-                <span>{isConnected ? 'Connected' : 'Disconnected'}</span>
+                <span className="text-gray-300">{isConnected ? 'Connected' : 'Disconnected'}</span>
                 {!isConnected && (
                   <Button
                     onClick={connectToBackend}
                     size="sm"
                     variant="outline"
+                    className="border-gray-700 text-gray-300 hover:bg-gray-800"
                   >
                     Retry Connection
                   </Button>
@@ -558,7 +574,7 @@ export default function VoiceBrowserUI() {
                 <Button
                   onClick={toggleListening}
                   disabled={!isConnected}
-                  className={`${isListening ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-6 py-3 text-lg`}
+                  className={`${isListening ? 'bg-red-600 hover:bg-red-700' : 'bg-blue-600 hover:bg-blue-700'} text-white px-6 py-3 text-lg disabled:bg-gray-700 disabled:text-gray-400`}
                   aria-describedby="listening-status"
                 >
                   {isListening ? 'Stop Listening' : 'Start Listening'}
@@ -592,27 +608,27 @@ export default function VoiceBrowserUI() {
 
               {/* Current Transcript */}
               {transcript && (
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded">
-                  <p><strong>Hearing:</strong> {transcript}</p>
+                <div className="p-4 bg-blue-900/30 border border-blue-700 rounded">
+                  <p className="text-blue-200"><strong>Hearing:</strong> {transcript}</p>
                 </div>
               )}
 
               {/* Speaking indicator */}
               {isSpeaking && (
-                <div className="p-4 bg-purple-50 border border-purple-200 rounded flex items-center gap-2">
+                <div className="p-4 bg-purple-900/30 border border-purple-700 rounded flex items-center gap-2">
                   <div className="animate-pulse">
-                    <svg className="w-5 h-5 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <svg className="w-5 h-5 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
                       <path d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" />
                     </svg>
                   </div>
-                  <p><strong>Speaking...</strong> (Say "stop" to interrupt)</p>
+                  <p className="text-purple-200"><strong>Speaking...</strong> (Say "stop" to interrupt)</p>
                 </div>
               )}
 
               {/* Status Messages - Fixed scrolling container */}
-              <div className="border rounded-lg bg-white" style={{ height: '400px' }}>
-                <div className="p-2 border-b bg-gray-50">
-                  <h3 className="font-semibold">Chat History</h3>
+              <div className="border border-gray-700 rounded-lg bg-gray-800" style={{ height: '400px' }}>
+                <div className="p-2 border-b border-gray-700 bg-gray-900">
+                  <h3 className="font-semibold text-gray-200">Chat History</h3>
                 </div>
                 <div className="overflow-y-auto" style={{ height: 'calc(100% - 40px)' }}>
                   <div className="p-4 space-y-2">
@@ -620,12 +636,12 @@ export default function VoiceBrowserUI() {
                       <div
                         key={`${msg.timestamp}-${idx}`}
                         className={`p-3 rounded ${
-                          msg.type === 'user' ? 'bg-blue-100 border-l-4 border-blue-500' :
-                          msg.type === 'assistant' ? 'bg-green-100 border-l-4 border-green-500' :
-                          msg.type === 'result' ? 'bg-indigo-100 border-l-4 border-indigo-500' :
-                          msg.type === 'error' ? 'bg-red-100 border-l-4 border-red-500' :
-                          msg.type === 'system' ? 'bg-gray-100 border-l-4 border-gray-500' :
-                          'bg-yellow-100 border-l-4 border-yellow-500'
+                          msg.type === 'user' ? 'bg-blue-900/30 border-l-4 border-blue-500 text-blue-200' :
+                          msg.type === 'assistant' ? 'bg-green-900/30 border-l-4 border-green-500 text-green-200' :
+                          msg.type === 'result' ? 'bg-indigo-900/30 border-l-4 border-indigo-500 text-indigo-200' :
+                          msg.type === 'error' ? 'bg-red-900/30 border-l-4 border-red-500 text-red-200' :
+                          msg.type === 'system' ? 'bg-gray-800 border-l-4 border-gray-600 text-gray-300' :
+                          'bg-yellow-900/30 border-l-4 border-yellow-500 text-yellow-200'
                         }`}
                         role={msg.type === 'error' ? 'alert' : undefined}
                       >
@@ -642,21 +658,21 @@ export default function VoiceBrowserUI() {
           </Card>
 
           {/* Settings Card */}
-          <Card className="mt-6">
+          <Card className="mt-6 bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle>Voice Settings</CardTitle>
+              <CardTitle className="text-gray-100">Voice Settings</CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 <div>
-                  <label htmlFor="voice-select" className="block text-sm font-medium mb-2">
+                  <label htmlFor="voice-select" className="block text-sm font-medium mb-2 text-gray-300">
                     Text-to-Speech Voice
                   </label>
                   <select
                     id="voice-select"
                     value={selectedVoiceIndex}
                     onChange={(e) => setSelectedVoiceIndex(Number(e.target.value))}
-                    className="w-full p-2 border rounded-md"
+                    className="w-full p-2 border border-gray-700 rounded-md bg-gray-800 text-gray-200 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     aria-label="Select text-to-speech voice"
                   >
                     {availableVoices.map((voice, index) => (
@@ -670,6 +686,7 @@ export default function VoiceBrowserUI() {
                   onClick={() => speak('This is a test of the selected voice.', true)}
                   variant="outline"
                   size="sm"
+                  className="border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   Test Voice
                 </Button>
@@ -690,7 +707,7 @@ export default function VoiceBrowserUI() {
                   }}
                   variant="outline"
                   size="sm"
-                  className="ml-2"
+                  className="ml-2 border-gray-700 text-gray-300 hover:bg-gray-800"
                 >
                   Manual Test
                 </Button>
@@ -699,14 +716,14 @@ export default function VoiceBrowserUI() {
           </Card>
 
           {/* Instructions */}
-          <Card className="mt-6">
+          <Card className="mt-6 bg-gray-900 border-gray-800">
             <CardHeader>
-              <CardTitle>Voice Browser for Accessibility</CardTitle>
+              <CardTitle className="text-gray-100">Voice Browser for Accessibility</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-4 text-gray-300">
                 <div>
-                  <h4 className="font-semibold mb-2">Voice Commands:</h4>
+                  <h4 className="font-semibold mb-2 text-gray-200">Voice Commands:</h4>
                   <ul className="space-y-1 text-sm">
                     <li>• Say commands like "Search for Python tutorials" or "Go to Google"</li>
                     <li>• Say "Stop" while the assistant is speaking to interrupt</li>
@@ -716,16 +733,16 @@ export default function VoiceBrowserUI() {
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-2">Keyboard Shortcuts:</h4>
+                  <h4 className="font-semibold mb-2 text-gray-200">Keyboard Shortcuts:</h4>
                   <ul className="space-y-1 text-sm">
-                    <li>• <kbd>Space</kbd> - Start/Stop listening</li>
-                    <li>• <kbd>Escape</kbd> - Interrupt speech or cancel task</li>
-                    <li>• <kbd>Ctrl+C</kbd> - Cancel current task</li>
+                    <li>• <kbd className="px-2 py-1 bg-gray-800 border border-gray-700 rounded text-gray-200">Space</kbd> - Start/Stop listening</li>
+                    <li>• <kbd className="px-2 py-1 bg-gray-800 border border-gray-700 rounded text-gray-200">Escape</kbd> - Interrupt speech or cancel task</li>
+                    <li>• <kbd className="px-2 py-1 bg-gray-800 border border-gray-700 rounded text-gray-200">Ctrl+C</kbd> - Cancel current task</li>
                   </ul>
                 </div>
                 
                 <div>
-                  <h4 className="font-semibold mb-2">Features:</h4>
+                  <h4 className="font-semibold mb-2 text-gray-200">Features:</h4>
                   <ul className="space-y-1 text-sm">
                     <li>• The chat history preserves all interactions and can be scrolled</li>
                     <li>• Designed for screen readers and keyboard navigation</li>
