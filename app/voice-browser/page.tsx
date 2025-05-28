@@ -147,11 +147,14 @@ export default function VoiceBrowserUI() {
         wsRef.current.close()
       }
 
+
       // const ws = new WebSocket('ws://localhost:8001/ws')
       const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws'
-      const ws = new WebSocket(wsUrl)
+      // Ensure the WebSocket URL includes the /ws path
+      const finalWsUrl = wsUrl.endsWith('/ws') ? wsUrl : `${wsUrl}/ws`
+      const ws = new WebSocket(finalWsUrl)
       wsRef.current = ws
-
+      
       ws.onopen = () => {
         setIsConnected(true)
         reconnectAttemptsRef.current = 0
