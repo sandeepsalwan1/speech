@@ -142,6 +142,12 @@ export default function VoiceBrowserUI() {
 
   const connectToBackend = () => {
     try {
+      console.log('🔄 Starting WebSocket connection...')
+      console.log('📍 Environment variables:', {
+        NEXT_PUBLIC_WS_URL: process.env.NEXT_PUBLIC_WS_URL,
+        NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL
+      })
+      
       // Clear any existing connection
       if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
         wsRef.current.close()
@@ -150,8 +156,11 @@ export default function VoiceBrowserUI() {
 
       // const ws = new WebSocket('ws://localhost:8001/ws')
       const wsUrl = process.env.NEXT_PUBLIC_WS_URL || 'ws://localhost:8000/ws'
-      // Ensure the WebSocket URL includes the /ws path
-      const finalWsUrl = wsUrl.endsWith('/ws') ? wsUrl : `${wsUrl}/ws`
+      // Ensure the WebSocket URL includes the /ws path and handle double slashes
+      let finalWsUrl = wsUrl.endsWith('/ws') ? wsUrl : `${wsUrl}/ws`
+      // Fix double slashes
+      finalWsUrl = finalWsUrl.replace(/\/\/ws$/, '/ws')
+      console.log('🔗 Connecting to WebSocket:', finalWsUrl)
       const ws = new WebSocket(finalWsUrl)
       wsRef.current = ws
       
@@ -251,8 +260,10 @@ export default function VoiceBrowserUI() {
       }
 
       ws.onerror = (error) => {
-        console.error('WebSocket error:', error)
-        addMessage('error', 'Connection error. Please check if backend is running on port 8000.')
+        console.error('❌ WebSocket error:', error)
+        console.error('🔗 Failed WebSocket URL:', finalWsUrl)
+        console.error('📊 WebSocket readyState:', ws.readyState)
+        addMessage('error', `Connection error to ${finalWsUrl}. Please check if backend is running.`)
       }
 
     } catch (error) {
